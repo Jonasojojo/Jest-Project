@@ -1,10 +1,9 @@
 import java.util.*;
 
 public class GameLogic {
-    private Deck initialDeck = new Deck();
-    private RoundStack roundStack = new RoundStack();
+    private final Deck initialDeck = new Deck();
     private final TrophyManager trophyManager = new TrophyManager();
-    private List<Player> players = new ArrayList<>();
+    private final List<Player> players = new ArrayList<>();
     private boolean isFirstRound = true;
 
     public void setupPhase() {
@@ -24,7 +23,8 @@ public class GameLogic {
         while (initialDeck.size() >= GameConstants.numberOfPlayers * 2 ) {
             dealCards();
 
-            makeOffers();
+            OfferManager offerManager = new OfferManager(players);
+            offerManager.collectOffers();
 
             TurnManager turnManager = new TurnManager(players);
             turnManager.executeTurns();
@@ -47,7 +47,7 @@ public class GameLogic {
             }
         } else {
             // Later rounds = use a RoundStack
-            roundStack = new RoundStack();
+            RoundStack roundStack = new RoundStack();
             roundStack.prepare(players, initialDeck);
 
             for (Player p : players) {
@@ -57,41 +57,6 @@ public class GameLogic {
         }
     }
 
-
-    private void makeOffers() {
-        for (Player p : players) {
-            if (p.getHand().getCardList().size() < 2) {
-                continue;
-            }
-            int choice = promptFaceUpCard(p);
-            p.putCardsInOffer(choice - 1);
-        }
-    }
-
-
-    private int promptFaceUpCard(Player p) {
-        Scanner sc = new Scanner(System.in);
-
-
-        System.out.println("\n" + p.getPlayerName() + ", choose your offer:");
-        System.out.println("Your hand: ");
-        for (int i = 0; i < p.getHand().getCardList().size(); i++) {
-            System.out.println((i + 1) + ": " + p.getHand().getCardList().get(i));
-        }
-
-        int choice = -1;
-        while (true) {
-            System.out.print("Which card should be face-up (enter 1 or 2)? ");
-            if (sc.hasNextInt()) {
-                choice = sc.nextInt();
-                if (choice == 1 || choice == 2) break;
-            } else {
-                sc.next(); // clear invalid input
-            }
-            System.out.println("Invalid input. Enter 1 or 2.");
-        }
-        return choice;
-    }
 
     private void finalizeJests() {
         for (Player p : players) {
@@ -108,6 +73,7 @@ public class GameLogic {
                 .max(Comparator.comparingLong(p -> p.getJest().calculatePoints()))
                 .orElse(null);
 
+        assert winner != null;
         System.out.println("Winner: " + winner.getPlayerName() + " with " + winner.getJest().calculatePoints() + " points.");
     }
 }
