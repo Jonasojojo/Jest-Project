@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Player {
     private Jest jest = new Jest();
-    private HandToPlay hand = new HandToPlay();
+    private Cards hand = new Cards();
     private PlayedHand playedHand = new PlayedHand();
     private String playerName;
 
@@ -18,7 +18,7 @@ public class Player {
         return playerName;
     }
 
-    public HandToPlay getHand() {
+    public Cards getHand() {
         return hand;
     }
 
