@@ -1,69 +1,54 @@
 import java.util.stream.Collectors;
 
-
+/**
+ * Jest hand evaluator.
+ * Extends `Cards` and provides logic to compute the total points for this hand.
+ */
 public class Jest extends Cards {
 
-    // Count hearts in the hand
-    private long numberOfHearts() {
-        return getCardList().stream()
-                .filter(card -> card.getSuit() == Card.Suit.HEART)
-                .count();
-    }
+    /**
+     * Count the number of valid pairs in the hand.
 
-    // Check if a joker is in hand
-    private boolean jokerInHand() {
-        return getCardList().stream()
-                .anyMatch(card -> card.getSuit() == Card.Suit.JOKER);
-    }
+     * A "pair" here is defined as exactly two cards of the same rank,
+     * but only clubs or spades are considered.
 
-    // Check if there's exactly one Ace
-    private boolean isAceWorthFive() {
-        return getCardList().stream()
-                .filter(card -> card.getRank() == 1)
-                .count() == 1;
-    }
-
-    // Calculate the value of a single card
-    public int createCardValue(Card card) {
-        int rank = card.getRank();
-        Card.Suit suit = card.getSuit();
-        long heartsCount = numberOfHearts();
-        boolean hasJoker = jokerInHand();
-
-        int cardValue = switch (suit) {
-            case JOKER -> (heartsCount == 0) ? GameConstants.jokerIfNoHeart : rank;
-            case HEART -> {
-                if (hasJoker && heartsCount == 4) yield rank;
-                else if (hasJoker) yield -rank;
-                else yield 0;
-            }
-            case DIAMOND -> -rank;
-            default -> rank;
-        };
-
-        if (rank == 1 && isAceWorthFive()) {
-            cardValue *= 5;
-        }
-
-        return cardValue;
-    }
-
-
-    private long numberOfPairs (){
+     * Stream steps:
+     *  - filter: keep only clubs and spades
+     *  - groupingBy: group remaining cards by rank
+     *  - values().stream(): iterate over the groups
+     *  - filter(list -> list.size() == 2): keep only groups with exactly two cards
+     *  - count(): return the number of such groups
+     */
+    private long numberOfPairs() {
         return getCardList().stream()
                 .filter(c -> c.getSuit() == Card.Suit.CLUB || c.getSuit() == Card.Suit.SPADE)
                 .collect(Collectors.groupingBy(Card::getRank))
                 .values().stream()
-                .filter(list -> list.size()==2)
+                .filter(list -> list.size() == 2)
                 .count();
     }
 
-    // Calculate total points
+    /**
+     * Calculate total points for this hand.
+
+     * Steps:
+     *  - Create a CardValueVisitor with the hand context (e.g. hearts, jokers).
+     *  - For each card: accept the visitor and read the value produced by the visitor.
+     *    (The visitor is reused; it is expected to update its value when visiting each card.)
+     *  - Sum all card values and add pair bonus points (numberOfPairs * GameConstants.valueOfPairs).
+     */
     public long calculatePoints() {
-        long cardPoint= getCardList().stream()
-                .mapToInt(this::createCardValue) // apply createCardValue to each card
+        CardValueVisitor visitor = new CardValueVisitor(getCardList());
+
+        long cardPoints = getCardList().stream()
+                .mapToInt(card -> {
+                    card.accept(visitor);
+                    return visitor.getValue();
+                })
                 .sum();
-        long pairPoints = numberOfPairs()*GameConstants.valueOfPairs;
-        return cardPoint+pairPoints;
+
+        long pairPoints = numberOfPairs() * GameConstants.valueOfPairs;
+
+        return cardPoints + pairPoints;
     }
 }

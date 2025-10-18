@@ -13,6 +13,5 @@ public class Deck extends AbstractCardStack {
             }
         }
         addCard(new Card(Card.Suit.JOKER, 0));
-        System.out.println("DEBUG → Deck initialized with cards: " + getCardList());
     }
 }

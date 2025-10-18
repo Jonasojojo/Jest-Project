@@ -5,15 +5,21 @@ public class TrophyManager {
 
     public void setupTrophies(Deck deck, int numberOfPlayers) {
         trophies.clear();
-        if (GameConstants.numberOfPlayers == 3) {
-            trophies.add(new Trophy(deck.drawCard()));
-            System.out.println("the first trophy is " + trophies.get(0).getRank() + trophies.get(0).getSuit() + " win condition is " + trophies.get(0).getObtainConditions());
-            trophies.add(new Trophy(deck.drawCard()));
-            System.out.println("the second trophy is " + trophies.get(1).getRank() + trophies.get(1).getSuit() + " win condition is " + trophies.get(1).getObtainConditions());
+
+        if (numberOfPlayers == 3) {
+            addTrophy(deck, "first");
+            addTrophy(deck, "second");
         } else {
-            trophies.add(new Trophy(deck.drawCard()));
-            System.out.println("the first trophy is " + trophies.get(0).getRank() + trophies.get(0).getSuit() + " win condition is " + trophies.get(0).getObtainConditions());
+            addTrophy(deck, "first");
         }
+    }
+
+    private void addTrophy(Deck deck, String label) {
+        Trophy trophy = new Trophy(deck.drawCard());
+        trophies.add(trophy);
+        System.out.println("The " + label + " trophy is " +
+                trophy.getRank() + trophy.getSuit() +
+                " | Win condition: " + trophy.getObtainConditions());
     }
 
     public List<Trophy> getTrophies() {
@@ -22,14 +28,22 @@ public class TrophyManager {
 
     public void awardTrophies(List<Player> players) {
         Map<Player, Trophy> trophiesToBeAwarded = new HashMap<>();
+        TrophyAwardVisitor awardVisitor = new DefaultTrophyAwardVisitor();
+
         for (Trophy trophy : trophies) {
-            Player winner = trophy.awardTrophy(players);
+            Player winner = trophy.accept(awardVisitor, players);
             if (winner != null) {
                 trophiesToBeAwarded.put(winner, trophy);
             }
         }
-        for (Player p : trophiesToBeAwarded.keySet()) {
-            p.getJest().addCardToCards(trophiesToBeAwarded.get(p));
+
+        for (Map.Entry<Player, Trophy> entry : trophiesToBeAwarded.entrySet()) {
+            Player player = entry.getKey();
+            Trophy trophy = entry.getValue();
+            player.getJest().addCardToCards(trophy);
+            System.out.println(player.getPlayerName() + " won trophy: " +
+                    trophy.getRank() + trophy.getSuit() +
+                    " (" + trophy.getObtainConditions() + ")");
         }
     }
 }

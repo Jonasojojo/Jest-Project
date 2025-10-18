@@ -8,12 +8,15 @@ public class GameLogic {
 
     public void setupPhase() {
         initialDeck.shuffle();
-        trophyManager.setupTrophies(initialDeck, players.size());
+
 
         for (int i = 0; i < GameConstants.numberOfPlayers; i++) {
             Player p = new Player("Player " + (i + 1));
             players.add(p);
         }
+        System.out.println("size of players: " + players.size());
+
+        trophyManager.setupTrophies(initialDeck, players.size());
     }
 
 

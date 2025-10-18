@@ -47,4 +47,8 @@ public class Card {
         return rank + suitSymbol;
     }
 
+    public void accept(CardVisitor visitor) {
+        visitor.visit(this);
+    }
+
 }
