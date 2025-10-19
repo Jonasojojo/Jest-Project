@@ -1,4 +1,4 @@
-package model;
+package jestgame.model;
 
 public class PlayedHand{
     private Card cardFaceUp;

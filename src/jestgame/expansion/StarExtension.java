@@ -1,7 +1,6 @@
-package expansion;
-import java.util.*;
-import model.*;
-import visitors.*;
+package jestgame.expansion;
+import jestgame.model.*;
+import jestgame.visitors.*;
 
 public class StarExtension implements Extension {
 

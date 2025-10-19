@@ -1,10 +1,10 @@
-package visitors;
+package jestgame.visitors;
 
-import expansion.Extension;
-import model.Card;
-import model.Jest;
-import model.Player;
-import model.Trophy;
+import jestgame.expansion.Extension;
+import jestgame.model.Card;
+import jestgame.model.Jest;
+import jestgame.model.Player;
+import jestgame.model.Trophy;
 
 import java.util.List;
 

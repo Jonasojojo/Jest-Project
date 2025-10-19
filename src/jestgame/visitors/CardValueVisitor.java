@@ -1,8 +1,8 @@
-package visitors;
+package jestgame.visitors;
 
-import expansion.Extension;
-import model.Card;
-import model.GameConstants;
+import jestgame.expansion.Extension;
+import jestgame.model.Card;
+import jestgame.model.GameConstants;
 
 import java.util.List;
 

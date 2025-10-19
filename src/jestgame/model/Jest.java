@@ -1,8 +1,7 @@
-package model;
+package jestgame.model;
 
-import expansion.Extension;
-import game.GameLogic;
-import visitors.CardValueVisitor;
+import jestgame.expansion.Extension;
+import jestgame.visitors.CardValueVisitor;
 
 import java.util.List;
 import java.util.stream.Collectors;

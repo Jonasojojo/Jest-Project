@@ -1,14 +1,19 @@
-package game;
+package jestgame.game;
 
-import model.Player;
+import jestgame.gamemodes.GameMode;
+import jestgame.model.Player;
 
+import java.util.List;
 import java.util.Scanner;
 
-public class OfferManager {
-    private final java.util.List<Player> players;
 
-    public OfferManager(java.util.List<Player> players) {
+public class OfferManager {
+    private final List<Player> players;
+    private GameMode gameMode = null;
+
+    public OfferManager(List<Player> players, GameMode gameMode) {
         this.players = players;
+        this.gameMode = gameMode;
     }
 
     public void collectOffers() {
@@ -16,8 +21,14 @@ public class OfferManager {
             if (p.getHand().getCardList().size() < 2) {
                 continue;
             }
-            int choice = promptFaceUpCard(p);
-            p.putCardsInOffer(choice - 1);
+            if (gameMode!=null){
+                gameMode.onOffer(p);
+            }
+            else {
+                int choice = promptFaceUpCard(p);
+                p.putCardsInOffer(choice - 1);
+            }
+
         }
     }
 

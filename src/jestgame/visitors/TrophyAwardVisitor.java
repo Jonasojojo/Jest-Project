@@ -1,7 +1,7 @@
-package visitors;
+package jestgame.visitors;
 
-import model.Player;
-import model.Trophy;
+import jestgame.model.Player;
+import jestgame.model.Trophy;
 
 import java.util.*;
 

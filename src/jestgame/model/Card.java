@@ -1,5 +1,5 @@
-package model;
-import visitors.*;
+package jestgame.model;
+import jestgame.visitors.*;
 
 public class Card {
 

@@ -1,6 +1,6 @@
-package visitors;
+package jestgame.visitors;
 
-import model.Card;
+import jestgame.model.Card;
 
 public interface CardVisitor {
     void visit(Card card);

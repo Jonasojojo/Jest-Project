@@ -1,10 +1,8 @@
-package expansion;
-import model.Card;
-import model.Deck;
-import model.Trophy;
-import visitors.CardValueVisitor;
-
-import java.util.*;
+package jestgame.expansion;
+import jestgame.model.Card;
+import jestgame.model.Deck;
+import jestgame.model.Trophy;
+import jestgame.visitors.CardValueVisitor;
 
 public interface Extension {
     String getName();

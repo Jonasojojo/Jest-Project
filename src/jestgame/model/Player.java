@@ -1,6 +1,6 @@
-package model;
+package jestgame.model;
 
-import expansion.Extension;
+import jestgame.expansion.Extension;
 
 import java.util.List;
 

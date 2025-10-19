@@ -1,15 +1,18 @@
-package game;
+package jestgame.game;
 
-import model.Card;
-import model.Player;
+import jestgame.gamemodes.GameMode;
+import jestgame.model.Card;
+import jestgame.model.Player;
 
 import java.util.*;
 
 public class TurnManager {
     private final List<Player> players;
+    private final GameMode gameMode;
 
-    public TurnManager(List<Player> players) {
+    public TurnManager(List<Player> players, GameMode gameMode) {
         this.players = players;
+        this.gameMode = gameMode;
     }
 
     public void executeTurns() {
@@ -48,6 +51,15 @@ public class TurnManager {
     }
 
     private Player getFirstPlayer() {
+        if (gameMode instanceof jestgame.gamemodes.ReversalMode){
+            return players.stream()
+                    .filter(p -> p.getPlayedHand().getCardFaceUp() != null)
+                    .min(Comparator
+                            .comparingInt((Player p) -> p.getPlayedHand().getCardFaceUp().getRank())
+                            .thenComparingInt(p -> getSuitStrength(p.getPlayedHand().getCardFaceUp().getSuit())))
+                    .orElseThrow(() -> new IllegalStateException("No player has a face-up card!"));
+
+        }
         return players.stream()
                 .filter(p -> p.getPlayedHand().getCardFaceUp() != null)
                 .max(Comparator
@@ -69,10 +81,14 @@ public class TurnManager {
 
         System.out.println("\n" + current.getPlayerName() + ", choose a player to steal from:");
         for (int i = 0; i < targets.size(); i++) {
-            System.out.println((i+1) + ": " + targets.get(i).getPlayerName());
-            System.out.println(" he has " + targets.get(i).getPlayedHand().getCardFaceUp() + " hidden card");
+            Player t = targets.get(i);
+            System.out.print((i + 1) + ": " + t.getPlayerName() + " → ");
+            if (gameMode.hideOffersFromOthers()) {
+                System.out.println("[ ??? , ??? ]");
+            } else {
+                System.out.println(t.getPlayedHand().getCardFaceUp() + " and a hidden card");
+            }
         }
-
         int choice = -1;
         while (true) {
             System.out.print("Enter number of player to steal from: ");
@@ -109,9 +125,13 @@ public class TurnManager {
 
         while (true) {
             System.out.println("\n" + current.getPlayerName() + ", choose a card from " + target.getPlayerName() + "'s offer:");
-            System.out.println("1. Face-up: " + target.getPlayedHand().getCardFaceUp());
-            System.out.println("2. Face-down: [hidden]");
-            System.out.print("Enter 1 or 2: ");
+            if (gameMode.hideOffersFromOthers()) {
+                System.out.println("1. [ ??? ]");
+                System.out.println("2. [ ??? ]");
+            } else {
+                System.out.println("1. Face-up: " + target.getPlayedHand().getCardFaceUp());
+                System.out.println("2. Face-down: [hidden]");
+            }
 
             if (sc.hasNextInt()) {
                 choice = sc.nextInt();

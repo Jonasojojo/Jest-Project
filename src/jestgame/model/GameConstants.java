@@ -1,4 +1,4 @@
-package model;
+package jestgame.model;
 
 public class GameConstants {
     public static final int jokerIfNoHeart = 4;

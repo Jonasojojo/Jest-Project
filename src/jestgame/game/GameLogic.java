@@ -1,7 +1,8 @@
-package game;
+package jestgame.game;
 
-import expansion.Extension;
-import model.*;
+import jestgame.expansion.Extension;
+import jestgame.gamemodes.GameMode;
+import jestgame.model.*;
 import java.util.*;
 
 public class GameLogic {
@@ -10,6 +11,11 @@ public class GameLogic {
     private TrophyManager trophyManager;
     private final List<Player> players = new ArrayList<>();
     private boolean isFirstRound = true;
+    private final GameMode gameMode;
+
+    public GameLogic(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
 
     public List<Extension> getEnabledExtension() {
         return enabledExtension;
@@ -44,10 +50,10 @@ public class GameLogic {
         while (initialDeck.size() >= GameConstants.numberOfPlayers * 2 ) {
             dealCards();
 
-            OfferManager offerManager = new OfferManager(players);
+            OfferManager offerManager = new OfferManager(players, gameMode);
             offerManager.collectOffers();
 
-            TurnManager turnManager = new TurnManager(players);
+            TurnManager turnManager = new TurnManager(players, gameMode);
             turnManager.executeTurns();
 
             isFirstRound = false;

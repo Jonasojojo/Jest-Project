@@ -1,8 +1,8 @@
-package game;
+package jestgame.game;
 
-import expansion.Extension;
-import model.*;
-import visitors.*;
+import jestgame.expansion.Extension;
+import jestgame.model.*;
+import jestgame.visitors.*;
 import java.util.*;
 
 public class TrophyManager {

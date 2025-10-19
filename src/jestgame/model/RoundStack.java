@@ -1,4 +1,4 @@
-package model;
+package jestgame.model;
 
 import java.util.*;
 
