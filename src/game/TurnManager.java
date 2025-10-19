@@ -1,3 +1,8 @@
+package game;
+
+import model.Card;
+import model.Player;
+
 import java.util.*;
 
 public class TurnManager {

@@ -1,17 +1,35 @@
+package game;
+
+import expansion.Extension;
+import model.*;
 import java.util.*;
 
 public class GameLogic {
     private final Deck initialDeck = new Deck();
-    private final TrophyManager trophyManager = new TrophyManager();
+    private final List<Extension> enabledExtension = new ArrayList<>();
+    private TrophyManager trophyManager;
     private final List<Player> players = new ArrayList<>();
     private boolean isFirstRound = true;
 
+    public List<Extension> getEnabledExtension() {
+        return enabledExtension;
+    }
+
+    public void enableExpansion(Extension expansion) {
+        enabledExtension.add(expansion);
+    }
+
     public void setupPhase() {
+
+        for (Extension expansion : enabledExtension) {
+            expansion.addCardsToDeck(initialDeck);
+        }
+        trophyManager = new TrophyManager(enabledExtension);
         initialDeck.shuffle();
 
 
         for (int i = 0; i < GameConstants.numberOfPlayers; i++) {
-            Player p = new Player("Player " + (i + 1));
+            Player p = new Player("Player " + (i + 1), enabledExtension);
             players.add(p);
         }
         System.out.println("size of players: " + players.size());

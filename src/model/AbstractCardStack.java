@@ -1,6 +1,8 @@
+package model;
+
 import java.util.*;
 
-public abstract class AbstractCardStack extends Cards{
+public abstract class AbstractCardStack extends Cards {
 
     public void shuffle() {
         Collections.shuffle(getCardList());

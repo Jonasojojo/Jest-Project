@@ -1,3 +1,10 @@
+package model;
+
+import expansion.Extension;
+import game.GameLogic;
+import visitors.CardValueVisitor;
+
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -5,6 +12,18 @@ import java.util.stream.Collectors;
  * Extends `Cards` and provides logic to compute the total points for this hand.
  */
 public class Jest extends Cards {
+
+
+    private final List<Extension> extensions; // list of active expansions
+
+    // Constructor
+    public Jest(List<Extension> extensions) {
+        this.extensions = extensions;
+    }
+
+    public Jest() {
+        this.extensions = List.of();
+    }
 
     /**
      * Count the number of valid pairs in the hand.
@@ -38,7 +57,7 @@ public class Jest extends Cards {
      *  - Sum all card values and add pair bonus points (numberOfPairs * GameConstants.valueOfPairs).
      */
     public long calculatePoints() {
-        CardValueVisitor visitor = new CardValueVisitor(getCardList());
+        CardValueVisitor visitor = new CardValueVisitor(getCardList(), extensions);
 
         long cardPoints = getCardList().stream()
                 .mapToInt(card -> {

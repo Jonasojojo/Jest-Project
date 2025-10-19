@@ -1,3 +1,6 @@
+package model;
+import expansion.*;
+import visitors.*;
 import java.util.List;
 
 public class Trophy extends Card {
@@ -12,9 +15,20 @@ public class Trophy extends Card {
         bestJestNoJoke,
     }
 
-    public Trophy(Card card) {
+    public Trophy(Card card, List<Extension> extensions) {
         super(card.getSuit(), card.getRank());
-        this.obtainConditions = getObtainCondition(card.getSuit(), card.getRank());
+
+        ObtainConditions cond = null;
+        for (Extension e : extensions) {
+            cond = e.getTrophyCondition(card);
+            if (cond != null) break;
+        }
+
+        if (cond != null) {
+            this.obtainConditions = cond;
+        } else {
+            this.obtainConditions = getObtainCondition(card.getSuit(), card.getRank());
+        }
     }
 
     public ObtainConditions getObtainConditions() {

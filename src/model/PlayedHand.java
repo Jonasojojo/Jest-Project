@@ -1,3 +1,5 @@
+package model;
+
 public class PlayedHand{
     private Card cardFaceUp;
     private Card cardFaceDown;

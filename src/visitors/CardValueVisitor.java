@@ -1,13 +1,21 @@
+package visitors;
+
+import expansion.Extension;
+import model.Card;
+import model.GameConstants;
+
 import java.util.List;
 
 public class CardValueVisitor implements CardVisitor {
 
+    private final List<Extension> extensions;
     private int value;
     private long heartsCount;
     private boolean hasJoker;
     private boolean aceWorthFive;
 
-    public CardValueVisitor(List<Card> cards) {
+    public CardValueVisitor(List<Card> cards, List<Extension> extensions) {
+        this.extensions = extensions;
         this.heartsCount = cards.stream()
                 .filter(c -> c.getSuit() == Card.Suit.HEART)
                 .count();
@@ -39,6 +47,15 @@ public class CardValueVisitor implements CardVisitor {
             case DIAMOND -> -rank;
             default -> rank;
         };
+
+        for (Extension e : extensions) {
+            Integer customValue = e.getCustomCardValue(card, this);
+            if (customValue != null) {
+                this.value = customValue;
+                return;
+            }
+        }
+
 
         if (rank == 1 && aceWorthFive) {
             cardValue *= 5;

@@ -1,21 +1,31 @@
+package game;
+
+import expansion.Extension;
+import model.*;
+import visitors.*;
 import java.util.*;
 
 public class TrophyManager {
     private final List<Trophy> trophies = new ArrayList<>();
+    private final List<Extension> extensions;
+
+    public TrophyManager(List<Extension> extensions) {
+        this.extensions = extensions;
+    }
 
     public void setupTrophies(Deck deck, int numberOfPlayers) {
         trophies.clear();
 
         if (numberOfPlayers == 3) {
-            addTrophy(deck, "first");
-            addTrophy(deck, "second");
+            addTrophy(deck, "first", extensions);
+            addTrophy(deck, "second", extensions);
         } else {
-            addTrophy(deck, "first");
+            addTrophy(deck, "first", extensions);
         }
     }
 
-    private void addTrophy(Deck deck, String label) {
-        Trophy trophy = new Trophy(deck.drawCard());
+    private void addTrophy(Deck deck, String label, List<Extension> extension) {
+        Trophy trophy = new Trophy(deck.drawCard(), extension);
         trophies.add(trophy);
         System.out.println("The " + label + " trophy is " +
                 trophy.getRank() + trophy.getSuit() +
@@ -28,7 +38,7 @@ public class TrophyManager {
 
     public void awardTrophies(List<Player> players) {
         Map<Player, Trophy> trophiesToBeAwarded = new HashMap<>();
-        TrophyAwardVisitor awardVisitor = new DefaultTrophyAwardVisitor();
+        TrophyAwardVisitor awardVisitor = new DefaultTrophyAwardVisitor(extensions);
 
         for (Trophy trophy : trophies) {
             Player winner = trophy.accept(awardVisitor, players);

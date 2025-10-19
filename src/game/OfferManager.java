@@ -1,3 +1,7 @@
+package game;
+
+import model.Player;
+
 import java.util.Scanner;
 
 public class OfferManager {

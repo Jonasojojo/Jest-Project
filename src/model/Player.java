@@ -1,13 +1,19 @@
+package model;
+
+import expansion.Extension;
+
 import java.util.List;
 
 public class Player {
-    private Jest jest = new Jest();
+    private Jest jest;
     private Cards hand = new Cards();
     private PlayedHand playedHand = new PlayedHand();
     private String playerName;
 
-    public Player(String name){
+    public Player(String name, List<Extension> extensions) {
         this.playerName = name;
+        this.jest = new Jest(extensions);
+
     }
 
     public Jest getJest() {

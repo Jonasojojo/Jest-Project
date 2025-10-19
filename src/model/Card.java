@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import java.util.Objects;
+package model;
+import visitors.*;
 
 public class Card {
 
@@ -9,6 +9,7 @@ public class Card {
         DIAMOND,
         CLUB,
         SPADE,
+        STAR,
         JOKER
     }
 
@@ -41,6 +42,7 @@ public class Card {
             case DIAMOND -> "Diamond";
             case CLUB -> "Club";
             case SPADE -> "Spade";
+            case STAR -> "Star";
             default -> "afafafaf";
         };
 

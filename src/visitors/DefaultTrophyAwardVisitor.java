@@ -1,7 +1,15 @@
+package visitors;
+
+import expansion.Extension;
+import model.Card;
+import model.Jest;
+import model.Player;
+import model.Trophy;
+
 import java.util.List;
 
 public class DefaultTrophyAwardVisitor implements TrophyAwardVisitor {
-
+    private final List<Extension> extensions;
     @Override
     public Player visit(Trophy trophy, List<Player> players) {
         return switch (trophy.getObtainConditions()) {
@@ -23,13 +31,16 @@ public class DefaultTrophyAwardVisitor implements TrophyAwardVisitor {
         };
     }
 
+    public DefaultTrophyAwardVisitor(List<Extension> extensions) {
+        this.extensions = extensions;
+    }
 
     private Player awardHighest(List<Player> players, Card.Suit suit) {
         Player awardedPlayer = null;
         int bestValue = Integer.MIN_VALUE;
 
         for (Player p : players) {
-            CardValueVisitor valueVisitor = new CardValueVisitor(p.getJest().getCardList());
+            CardValueVisitor valueVisitor = new CardValueVisitor(p.getJest().getCardList(), extensions);
             for (Card c : p.getJest().getCardList()) {
                 if (c.getSuit() == suit) {
                     c.accept(valueVisitor);
@@ -49,7 +60,7 @@ public class DefaultTrophyAwardVisitor implements TrophyAwardVisitor {
         int worstValue = Integer.MAX_VALUE;
 
         for (Player p : players) {
-            CardValueVisitor valueVisitor = new CardValueVisitor(p.getJest().getCardList());
+            CardValueVisitor valueVisitor = new CardValueVisitor(p.getJest().getCardList(),extensions);
             for (Card c : p.getJest().getCardList()) {
                 if (c.getSuit() == suit) {
                     c.accept(valueVisitor);
