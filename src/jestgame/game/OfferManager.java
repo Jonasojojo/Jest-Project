@@ -24,16 +24,20 @@ public class OfferManager {
             if (gameMode!=null){
                 gameMode.onOffer(p);
             }
-            else {
-                int choice = promptFaceUpCard(p);
-                p.putCardsInOffer(choice - 1);
-            }
+
+            int choice = promptFaceUpCard(p);
+            p.putCardsInOffer(choice - 1);
 
         }
     }
 
 
     private int promptFaceUpCard(Player p) {
+        if (p.isBot()) {
+            // Use bot strategy
+            return p.getStrategy().chooseCardToOffer(p) + 1; // +1 because OfferManager expects 1 or 2
+        }
+
         Scanner sc = new Scanner(System.in);
 
 

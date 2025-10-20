@@ -1,3 +1,5 @@
+import jestgame.bots.BotManager;
+import jestgame.bots.BotStrategy;
 import jestgame.expansion.StarExtension;
 import jestgame.game.GameLogic;
 import jestgame.gamemodes.GameMode;
@@ -12,6 +14,8 @@ public class Main {
         // You can set number of players here or in a constants class
         GameConstants.numberOfPlayers = 3; // Example
 
+        BotManager botManager = new BotManager();
+        Map<String, BotStrategy> botConfigs = botManager.configureBots();
 
         // New: select a game mode
         GameModeManager modeManager = new GameModeManager();
@@ -26,6 +30,13 @@ public class Main {
         if (sc.nextLine().trim().equalsIgnoreCase("y")) {
             game.enableExpansion(new StarExtension());
         }
+
+
+        // Ask how many humans
+        System.out.print("Number of human players (1-3): ");
+        int humans = Integer.parseInt(sc.nextLine());
+
+        game.setupGame(humans, botConfigs);
         game.playGame();
 
         System.out.println("=== Game Over ===");

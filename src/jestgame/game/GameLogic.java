@@ -1,5 +1,6 @@
 package jestgame.game;
 
+import jestgame.bots.BotStrategy;
 import jestgame.expansion.Extension;
 import jestgame.gamemodes.GameMode;
 import jestgame.model.*;
@@ -21,31 +22,39 @@ public class GameLogic {
         return enabledExtension;
     }
 
-    public void enableExpansion(Extension expansion) {
-        enabledExtension.add(expansion);
-    }
 
-    public void setupPhase() {
 
-        for (Extension expansion : enabledExtension) {
-            expansion.addCardsToDeck(initialDeck);
+    public void setupGame(int numHumans, Map<String, BotStrategy> botConfigs) {
+        // Add human players
+        for (int i = 1; i <= numHumans; i++) {
+            players.add(new Player("Human " + i, enabledExtension));
         }
+
+        // Add bots
+        int botIndex = 1;
+        for (Map.Entry<String, BotStrategy> entry : botConfigs.entrySet()) {
+            String name = entry.getKey() + " (Bot)";
+            BotStrategy strategy = entry.getValue();
+            players.add(new Player(name, strategy, enabledExtension));
+            botIndex++;
+        }
+
+        // Setup trophies and deck
+        for (Extension ext : enabledExtension) {
+            ext.addCardsToDeck(initialDeck);
+        }
+
         trophyManager = new TrophyManager(enabledExtension);
         initialDeck.shuffle();
-
-
-        for (int i = 0; i < GameConstants.numberOfPlayers; i++) {
-            Player p = new Player("Player " + (i + 1), enabledExtension);
-            players.add(p);
-        }
-        System.out.println("size of players: " + players.size());
-
         trophyManager.setupTrophies(initialDeck, players.size());
+    }
+
+    public void enableExpansion(Extension extension) {
+        enabledExtension.add(extension);
     }
 
 
     public void playGame() {
-        setupPhase();
 
         while (initialDeck.size() >= GameConstants.numberOfPlayers * 2 ) {
             dealCards();

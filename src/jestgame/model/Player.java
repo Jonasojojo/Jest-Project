@@ -1,10 +1,12 @@
 package jestgame.model;
 
+import jestgame.bots.BotStrategy;
 import jestgame.expansion.Extension;
 
 import java.util.List;
 
 public class Player {
+    private BotStrategy strategy = null;
     private Jest jest;
     private Cards hand = new Cards();
     private PlayedHand playedHand = new PlayedHand();
@@ -14,6 +16,19 @@ public class Player {
         this.playerName = name;
         this.jest = new Jest(extensions);
 
+    }
+
+    public Player(String name, BotStrategy strategy, List<Extension> extensions) {
+        this(name, extensions);
+        this.strategy = strategy;
+    }
+
+    public boolean isBot() {
+        return strategy != null;
+    }
+
+    public BotStrategy getStrategy() {
+        return strategy;
     }
 
     public Jest getJest() {

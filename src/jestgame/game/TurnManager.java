@@ -77,6 +77,10 @@ public class TurnManager {
     }
 
     private Player chooseTarget(Player current, List<Player> targets) {
+        if (current.isBot()) {
+            return current.getStrategy().chooseTarget(current, targets);
+        }
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println("\n" + current.getPlayerName() + ", choose a player to steal from:");
@@ -120,6 +124,9 @@ public class TurnManager {
     }
 
     private boolean chooseFaceUpOrDown(Player current, Player target) {
+        if (current.isBot()) {
+            return current.getStrategy().chooseFaceUpOrDown(current, target);
+        }
         Scanner sc = new Scanner(System.in);
         int choice = 0;
 
