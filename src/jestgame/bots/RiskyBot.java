@@ -2,6 +2,7 @@ package jestgame.bots;
 
 import jestgame.model.Player;
 import jestgame.model.Card;
+
 import java.util.List;
 import java.util.Random;
 
@@ -13,13 +14,11 @@ public class RiskyBot implements BotStrategy {
     public int chooseCardToOffer(Player self) {
         var hand = self.getHand().getCardList();
 
-        // 70% chance to bluff (hide strong card), 30% to play strong card face-up
+        // 70% chance to bluff (hide weak card)
         boolean bluff = random.nextDouble() < 0.7;
         if (bluff) {
-            // hide the stronger card (put it face down)
             return hand.get(0).getRank() < hand.get(1).getRank() ? 0 : 1;
         } else {
-            // play stronger card face-up
             return hand.get(0).getRank() >= hand.get(1).getRank() ? 0 : 1;
         }
     }
@@ -47,10 +46,8 @@ public class RiskyBot implements BotStrategy {
     @Override
     public boolean chooseFaceUpOrDown(Player self, Player target) {
         // 30% chance to take face-down card (risky choice)
-        if (target.getPlayedHand().getCardFaceDown() != null && random.nextDouble() < 0.3) {
-            return false; // choose face-down
-        }
-        return true; // choose face-up
+        return target.getPlayedHand().getCardFaceDown() == null || !(random.nextDouble() < 0.3); // choose face-down
+// choose face-up
     }
 
     @Override

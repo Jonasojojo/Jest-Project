@@ -51,7 +51,7 @@ public class TurnManager {
     }
 
     private Player getFirstPlayer() {
-        if (gameMode instanceof jestgame.gamemodes.ReversalMode){
+        if (gameMode instanceof jestgame.gamemodes.ReversalMode) {
             return players.stream()
                     .filter(p -> p.getPlayedHand().getCardFaceUp() != null)
                     .min(Comparator
@@ -112,13 +112,17 @@ public class TurnManager {
         boolean chooseFaceUp = chooseFaceUpOrDown(current, target);
 
         Card chosenCard;
+
         if (chooseFaceUp) {
             chosenCard = target.getPlayedHand().getCardFaceUp();
+
             target.getPlayedHand().setCardFaceUp(null);
         } else {
             chosenCard = target.getPlayedHand().getCardFaceDown();
             target.getPlayedHand().setCardFaceDown(null);
         }
+        System.out.println("\n \n  the card you " + current.getPlayerName() + " is " + chosenCard);
+
 
         current.getJest().addCardToCards(chosenCard);
     }
@@ -129,6 +133,8 @@ public class TurnManager {
         }
         Scanner sc = new Scanner(System.in);
         int choice = 0;
+
+        System.out.println("\n \nDEBUG cards are: " + target.getPlayedHand().getCardFaceUp() + " and " + target.getPlayedHand().getCardFaceDown());
 
         while (true) {
             System.out.println("\n" + current.getPlayerName() + ", choose a card from " + target.getPlayerName() + "'s offer:");
@@ -149,7 +155,6 @@ public class TurnManager {
 
             System.out.println("Invalid input. Please enter 1 or 2.");
         }
-
         return choice == 1; // true = face-up, false = face-down
 
     }
@@ -167,6 +172,7 @@ public class TurnManager {
 
     private int getSuitStrength(Card.Suit s) {
         return switch (s) {
+            case STAR -> 5;
             case SPADE -> 4;
             case CLUB -> 3;
             case DIAMOND -> 2;

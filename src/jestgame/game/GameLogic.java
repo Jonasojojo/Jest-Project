@@ -4,6 +4,7 @@ import jestgame.bots.BotStrategy;
 import jestgame.expansion.Extension;
 import jestgame.gamemodes.GameMode;
 import jestgame.model.*;
+
 import java.util.*;
 
 public class GameLogic {
@@ -21,7 +22,6 @@ public class GameLogic {
     public List<Extension> getEnabledExtension() {
         return enabledExtension;
     }
-
 
 
     public void setupGame(int numHumans, Map<String, BotStrategy> botConfigs) {
@@ -56,7 +56,7 @@ public class GameLogic {
 
     public void playGame() {
 
-        while (initialDeck.size() >= GameConstants.numberOfPlayers * 2 ) {
+        while (initialDeck.size() >= GameConstants.numberOfPlayers * 2) {
             dealCards();
 
             OfferManager offerManager = new OfferManager(players, gameMode);
@@ -103,8 +103,11 @@ public class GameLogic {
     }
 
 
-
     private void declareWinner() {
+        for (Player p : players) {
+            System.out.println(p.getPlayerName() + " scored " + p.getJest().calculatePoints() + " points." + "his jest was" + p.getJest().getCardList());
+
+        }
         Player winner = players.stream()
                 .max(Comparator.comparingLong(p -> p.getJest().calculatePoints()))
                 .orElse(null);

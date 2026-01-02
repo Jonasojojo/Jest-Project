@@ -3,6 +3,7 @@ package jestgame.game;
 import jestgame.expansion.Extension;
 import jestgame.model.*;
 import jestgame.visitors.*;
+
 import java.util.*;
 
 public class TrophyManager {

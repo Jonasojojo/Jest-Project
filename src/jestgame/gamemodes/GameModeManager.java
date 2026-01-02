@@ -9,7 +9,7 @@ public class GameModeManager {
     private GameMode selectedMode;
 
     public GameModeManager() {
-        // Register available modes here
+        // Register available modes
         availableModes.add(new ClassicMode());
         availableModes.add(new BlindMode());
         availableModes.add(new ReversalMode());

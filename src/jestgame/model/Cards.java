@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cards {
-    private List<Card> cardList = new ArrayList<>();
+    private final List<Card> cardList = new ArrayList<>();
 
     public List<Card> getCardList() {
         return cardList;
@@ -14,5 +14,7 @@ public class Cards {
         cardList.add(card);
     }
 
-    public void removeCardToCards(Card card){ cardList.remove(card); }
+    public void removeCardToCards(Card card) {
+        cardList.remove(card);
+    }
 }

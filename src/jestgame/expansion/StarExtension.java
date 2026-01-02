@@ -33,7 +33,7 @@ public class StarExtension implements Extension {
     @Override
     public Integer getCustomCardValue(Card card, CardValueVisitor visitor) {
         if (card.getSuit() == Card.Suit.STAR) {
-            return card.getRank() * 2; // Example: double rank for STAR cards
+            return card.getRank() * 2; // double rank for STAR cards
         }
         return null;
     }

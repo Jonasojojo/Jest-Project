@@ -1,4 +1,5 @@
 package jestgame.model;
+
 import jestgame.visitors.*;
 
 public class Card {
@@ -33,7 +34,7 @@ public class Card {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         if (suit == Suit.JOKER) {
             return "JOKER";
         }
@@ -43,7 +44,7 @@ public class Card {
             case CLUB -> "Club";
             case SPADE -> "Spade";
             case STAR -> "Star";
-            default -> "afafafaf";
+            default -> "this should not happen";
         };
 
         return rank + suitSymbol;

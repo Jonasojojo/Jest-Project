@@ -7,10 +7,10 @@ import java.util.List;
 
 public class Player {
     private BotStrategy strategy = null;
-    private Jest jest;
-    private Cards hand = new Cards();
-    private PlayedHand playedHand = new PlayedHand();
-    private String playerName;
+    private final Jest jest;
+    private final Cards hand = new Cards();
+    private final PlayedHand playedHand = new PlayedHand();
+    private final String playerName;
 
     public Player(String name, List<Extension> extensions) {
         this.playerName = name;
@@ -35,7 +35,7 @@ public class Player {
         return jest;
     }
 
-    public String getPlayerName(){
+    public String getPlayerName() {
         return playerName;
     }
 
@@ -43,7 +43,7 @@ public class Player {
         return hand;
     }
 
-    public PlayedHand getPlayedHand(){
+    public PlayedHand getPlayedHand() {
         return playedHand;
     }
 

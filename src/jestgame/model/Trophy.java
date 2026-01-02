@@ -1,6 +1,8 @@
 package jestgame.model;
+
 import jestgame.expansion.*;
 import jestgame.visitors.*;
+
 import java.util.List;
 
 public class Trophy extends Card {

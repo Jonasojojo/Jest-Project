@@ -10,8 +10,4 @@ public class ReversalMode implements GameMode {
         return "Reversal Mode";
     }
 
-    /** Used by TurnManager to decide order direction */
-    public boolean reverseOrder() {
-        return true;
-    }
 }

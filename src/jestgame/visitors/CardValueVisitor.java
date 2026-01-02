@@ -10,9 +10,9 @@ public class CardValueVisitor implements CardVisitor {
 
     private final List<Extension> extensions;
     private int value;
-    private long heartsCount;
-    private boolean hasJoker;
-    private boolean aceWorthFive;
+    private final long heartsCount;
+    private final boolean hasJoker;
+    private final boolean aceWorthFive;
 
     public CardValueVisitor(List<Card> cards, List<Extension> extensions) {
         this.extensions = extensions;
